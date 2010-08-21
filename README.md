@@ -63,3 +63,23 @@ Validate attributes
 
 	#JS
 	bob.set('name', 'B'); // Will not set name since we have length validator
+
+
+Attribute properties
+----------
+
+Attribute can have following properties:
+
+* `value` - default value of the attribute
+* `valueFn` - function that will run instead of simple value. Could be used if your value depends on other instance values. The difference with setter it that valueFn is executed only at the very first getter call.
+* `setter` - method that will process value and store it when you use `instance.set(attr, value)`
+* `getter` - method that will process stored value and return it when you use `instance.get(attr)`
+* `readOnly` - if true setter won't change the value
+
+Also when value is changed (in case it successfully validated) the instance fires attrChange event, e.g.: `nameChange`, `salaryChange`, etc
+
+
+
+
+
+
