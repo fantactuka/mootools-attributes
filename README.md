@@ -1,6 +1,8 @@
 Class.Attributes
 ===========
 
+![Screenshot](http://github.com/fantactuka/mootools-attributes/raw/master/logo.png)
+
 Provides simple attributes definition with setters, getters, validators and change event handlers
 
 How to use
