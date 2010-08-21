@@ -6,7 +6,7 @@ Provides simple attributes definition with setters, getters, validators and chan
 How to use
 ----------
 
-All you have to do is add *Attributes* defenition to your class
+All you have to do is add `Attributes` defenition to your class
 
 	#JS
 	var Employee = new Class({
@@ -76,10 +76,4 @@ Attribute can have following properties:
 * `getter` - method that will process stored value and return it when you use `instance.get(attr)`
 * `readOnly` - if true setter won't change the value
 
-Also when value is changed (in case it successfully validated) the instance fires attrChange event, e.g.: `nameChange`, `salaryChange`, etc. Event handler gets one parameter - object with newVal and oldVal properties.
-
-
-
-
-
-
+Also when value is changed (in case it successfully validated) the instance fires attrChange event, e.g.: `nameChange`, `salaryChange`, etc. Event handler gets one parameter - object with `newVal` and `oldVal` properties.
