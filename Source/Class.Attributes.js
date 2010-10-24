@@ -17,7 +17,7 @@ provides: [Class.Attributes]
 
 Class.Mutators.Attributes = function(attributes) {
 
-    this.implement(Class.instantiate(Events));
+    this.implement(new Events);
 
     this.implement({
 
@@ -25,6 +25,7 @@ Class.Mutators.Attributes = function(attributes) {
 
         get: function(name) {
             var attr = this.$attributes[name];
+            if (!attr) return;
             if (attr.valueFn && !attr.initialized) {
                 attr.initialized = true;
                 attr.value = attr.valueFn.call(this);

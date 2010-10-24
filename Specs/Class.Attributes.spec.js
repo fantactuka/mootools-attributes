@@ -1,3 +1,8 @@
+
+var $each = window['$each'] || Object.each;
+
+
+
 var employee;
 var Employee = new Class({
 
@@ -122,6 +127,11 @@ describe('Class.Attributes', {
             });
         });
         employee.set('name', 'Bob');
+    },
+
+    'should correctly work with non-existing attributes': function() {
+        employee.set('no-existing-attribute', 1);
+        employee.get('no-existing-attribute', 1);
     }
 
 });
