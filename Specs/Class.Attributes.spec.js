@@ -3,15 +3,6 @@ var employee, $each = window['$each'] || Object.each;
 var Employee = new Class({
 
     Attributes: {
-
-        $getter: function(attr) {
-            return attr;
-        },
-
-        $setter: function(attr/*, value*/) {
-            return attr;
-        },
-
         name: {
             value: 'Unnamed',
             validator: function(value) {
@@ -137,14 +128,46 @@ describe('Class.Attributes', {
     'should correctly work with non-existing attributes': function() {
         employee.set('no-existing-attribute', 1);
         // Since $getter defined that just returns attr name
-        value_of(employee.get('no-existing-attribute')).should_be('no-existing-attribute');
+        value_of(employee.get('no-existing-attribute')).should_be_undefined();
     },
 
     '$getter and $setter should not be removed from attributes list': function() {
+        var EmployeeWithMissedAttrs = new Class({
+            Attributes: {
+                $getter: function(attr) {
+                    return attr;
+                },
+
+                $setter: function(attr, value) {
+                    throw new Error('Attribute `' + attr + '` does not exist. Won`t assign value: ' + value);
+                },
+
+                name: {
+                    value: 'Unnamed'
+                }
+            }
+        });
+
+        var employee = new EmployeeWithMissedAttrs();
+
         value_of(employee.$attributes.$getter).should_be_undefined();
         value_of(employee.$attributes.$setter).should_be_undefined();
         value_of(employee.get('$setter')).should_be('$setter');
         value_of(employee.get('$getter')).should_be('$getter');
+    },
+
+    'should be able to add new attributes to the instance': function() {
+        var anotherEmployee = new Employee();
+
+        employee.addAttributes({
+            lastName: {
+                value: 'Roberts'
+            }
+        });
+
+        value_of(anotherEmployee.get('lastName')).should_be_undefined();
+        value_of(employee.get('lastName')).should_be('Roberts');
     }
 
 });
+

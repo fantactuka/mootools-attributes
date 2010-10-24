@@ -78,11 +78,11 @@ But you're able to control accessing non-existing attributes by `$getter` and `$
 
 		Attributes: {
 		    $getter: function(name) {
-		        return name;
+		        return Cookie.read(name);
 		    },
 
 		    $setter: function(name, value) {
-		        throw new Error('Attribute `' + name + '` does not exist');
+		        Cookie.write(name, value)
 		    },
 
 			name: {
@@ -97,8 +97,8 @@ But you're able to control accessing non-existing attributes by `$getter` and `$
 
 	...
 
-	instance.get('non-existing-attribute'); // -> returns 'non-existing-attribute' as we defined such behaviour at $getter
-    instance.set('non-existing-attribute', 1); // -> throws error
+	instance.get('age'); // -> returns Cookie 'age' as we defined such behaviour at $getter
+    instance.set('age', 1); // -> write 'age' to Cookies
 
 
 Attribute properties
