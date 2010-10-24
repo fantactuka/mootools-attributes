@@ -17,6 +17,10 @@ provides: [Class.Attributes]
 
 Class.Mutators.Attributes = function(attributes) {
 
+    var $setter = attributes.$setter, $getter = attributes.$getter;
+    delete attributes.$setter;
+    delete attributes.$getter;
+
     this.implement(new Events);
 
     this.implement({
@@ -25,33 +29,40 @@ Class.Mutators.Attributes = function(attributes) {
 
         get: function(name) {
             var attr = this.$attributes[name];
-            if (!attr) return;
-            if (attr.valueFn && !attr.initialized) {
-                attr.initialized = true;
-                attr.value = attr.valueFn.call(this);
-            }
+            if (attr) {
+                if (attr.valueFn && !attr.initialized) {
+                    attr.initialized = true;
+                    attr.value = attr.valueFn.call(this);
+                }
 
-            if (attr.getter) {
-                return attr.getter.call(this, attr.value);
+                if (attr.getter) {
+                    return attr.getter.call(this, attr.value);
+                } else {
+                    return attr.value;
+                }
             } else {
-                return attr.value;
+                return $getter ? $getter(name) : undefined;
             }
         },
 
         set: function(name, value) {
             var attr = this.$attributes[name];
-            if (attr && !attr.readOnly) {
-                var oldVal = attr.value, newVal;
-                if (!attr.validator || attr.validator.call(this, value)) {
-                    if (attr.setter) {
-                        newVal = attr.setter.call(this, value);
-                    } else {
-                        newVal = value;
-                    }
-                    attr.value = newVal;
+            if (attr) {
+                if (!attr.readOnly) {
+                    var oldVal = attr.value, newVal;
+                    if (!attr.validator || attr.validator.call(this, value)) {
+                        if (attr.setter) {
+                            newVal = attr.setter.call(this, value);
+                        } else {
+                            newVal = value;
+                        }
+                        attr.value = newVal;
 
-                    this.fireEvent(name + 'Change', { newVal: newVal, oldVal: oldVal });
+                        this.fireEvent(name + 'Change', { newVal: newVal, oldVal: oldVal });
+                    }
                 }
+            } else if($setter) {
+                $setter(name, value);
             }
         },
 

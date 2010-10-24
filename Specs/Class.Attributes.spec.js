@@ -1,21 +1,26 @@
+var employee, $each = window['$each'] || Object.each;
 
-var $each = window['$each'] || Object.each;
-
-
-
-var employee;
 var Employee = new Class({
 
     Attributes: {
+
+        $getter: function(attr) {
+            return attr;
+        },
+
+        $setter: function(attr/*, value*/) {
+            return attr;
+        },
+
         name: {
             value: 'Unnamed',
-            validator: function(val) {
-                return val.trim().length > 2;
+            validator: function(value) {
+                return value.trim().length > 2;
             }
         },
         birthdate: {
-            setter: function(val) {
-                return new Date(val);
+            setter: function(value) {
+                return new Date(value);
             }
         },
         age: {
@@ -29,8 +34,8 @@ var Employee = new Class({
             readOnly: true
         },
         salary: {
-            getter: function(val) {
-                return '$' + val;
+            getter: function(value) {
+                return '$' + value;
             }
         },
         hobby: {
@@ -131,7 +136,15 @@ describe('Class.Attributes', {
 
     'should correctly work with non-existing attributes': function() {
         employee.set('no-existing-attribute', 1);
-        employee.get('no-existing-attribute', 1);
+        // Since $getter defined that just returns attr name
+        value_of(employee.get('no-existing-attribute')).should_be('no-existing-attribute');
+    },
+
+    '$getter and $setter should not be removed from attributes list': function() {
+        value_of(employee.$attributes.$getter).should_be_undefined();
+        value_of(employee.$attributes.$setter).should_be_undefined();
+        value_of(employee.get('$setter')).should_be('$setter');
+        value_of(employee.get('$getter')).should_be('$getter');
     }
 
 });
