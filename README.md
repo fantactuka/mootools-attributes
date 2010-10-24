@@ -70,7 +70,7 @@ Validate attributes
 Non-existing attributes
 ----------
 
-If you try to access non-existing attribute with `.get()` - by it will return `undefined`, if try to set it `.set(attr, value)` - nothing will happen
+If you try to access non-existing attribute with `.get()` - by it will return `undefined`, if try to set it `.set(attr, value)` - nothing will happen. 
 But you're able to control accessing non-existing attributes by `$getter` and `$setter` that will be called for such attributes
 
 	#JS
